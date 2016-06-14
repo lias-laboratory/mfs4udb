@@ -1,0 +1,3 @@
+# Query 1
+SELECT * FROM lasttab WHERE P1 = 'John' AND P2 = 'Bordeaux' AND P3 = 'Paris' AND P4 = 'Writer' AND P5 = 'Widower' AND P6 = 21 AND P7 = 4 AND P8 = 156 AND P9 = 95 AND P10 = 'Yellow' AND P11 = 'Black'
+

@@ -1,0 +1,62 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>fr.ensma.lias</groupId>
+	<artifactId>mfs4udb</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<properties>
+		<!-- Java version we use -->
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+	<developers>
+		<developer>
+			<id>jeans</id>
+			<name>JEAN Stéphane</name>
+			<email>jean@ensma.fr</email>
+			<organization>LIAS / ENSMA</organization>
+			<url>http://www.lias-lab.fr/members/stephanejean</url>
+			<roles>
+				<role>Leader</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>belheouanec</id>
+			<name>BELHEOUANE Chourouk</name>
+			<email>belheouane.chourouk@gmail.com</email>
+			<roles>
+				<role>Leader</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>baronm</id>
+			<name>BARON Mickael</name>
+			<email>baron@ensma.fr</email>
+			<organization>LIAS / ENSMA</organization>
+			<url>http://www.lias-lab.fr/members/mickaelbaron</url>
+			<roles>
+				<role>Developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.roaringbitmap</groupId>
+			<artifactId>RoaringBitmap</artifactId>
+			<version>0.4.10</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aeonbits.owner</groupId>
+			<artifactId>owner</artifactId>
+			<version>1.0.8</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.39</version>
+		</dependency>
+	</dependencies>
+</project>
