@@ -33,6 +33,18 @@ public interface MFS4UDBConfig extends Config {
     @Key("mysql.password")
     String mysqlPassword();
     
+    @Key("postgresql.url")
+    String postgresqlUrl();
+
+    @Key("postgresql.driver")
+    String postgresqlDriver();
+
+    @Key("postgresql.login")
+    String postgresqlLogin();
+
+    @Key("postgresql.password")
+    String postgresqlPassword();
+    
     @Key("experimental.database.type")
     String experimentalDatabaseType();
     
