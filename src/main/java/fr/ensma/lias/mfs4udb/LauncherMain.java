@@ -556,11 +556,13 @@ public class LauncherMain {
 
     private Connection createPostgreSQLConnection() {
 	try {
+	    
+	    Class.forName(config.postgresqlDriver());
 	    Connection c = DriverManager.getConnection(
 		    "jdbc:postgresql://localhost:5434/postgres", "liasidd",
 		    "psql");
 	    return c;
-	} catch (SQLException e) {
+	} catch (SQLException | ClassNotFoundException e)  {
 	    e.printStackTrace();
 
 	    throw new NotYetImplementedException();
