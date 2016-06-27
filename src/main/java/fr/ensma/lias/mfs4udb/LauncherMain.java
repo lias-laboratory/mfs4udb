@@ -559,7 +559,7 @@ public class LauncherMain {
 	    
 	    Class.forName(config.postgresqlDriver());
 	    Connection c = DriverManager.getConnection(
-		    "jdbc:postgresql://localhost:5434/postgres", "liasidd",
+		    config.postgresqlUrl(), "liasidd",
 		    "psql");
 	    return c;
 	} catch (SQLException | ClassNotFoundException e)  {
