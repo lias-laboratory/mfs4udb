@@ -2,11 +2,10 @@ package fr.ensma.lias.mfs4udb;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -486,10 +485,9 @@ public class LauncherMain {
 	BufferedReader in = null;
 
 	try {
-	    final URL fileUrl = LauncherMain.class.getResource("/" + fileName);
-	    final FileReader file = new FileReader(fileUrl.getFile());
+	    final InputStream fileUrl = LauncherMain.class.getResourceAsStream("/" + fileName);
+	    in = new BufferedReader(new InputStreamReader(fileUrl));
 
-	    in = new BufferedReader(file);
 	    final Pattern pTest = Pattern.compile("# (.*)");
 
 	    String line;
