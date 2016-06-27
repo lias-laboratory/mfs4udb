@@ -291,7 +291,7 @@ public class LauncherMain {
 			System.out
 				.println("Nb cache : " + q.getNbRepetedQuery());
 		    }
-		}, false, "MCS", chars[i]);
+		}, false, "MCS+M", chars[i]);
 	    }
 
 	    // MBS
