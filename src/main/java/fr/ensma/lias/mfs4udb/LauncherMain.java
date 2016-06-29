@@ -53,7 +53,7 @@ public class LauncherMain {
 //	executeExp3(c, "queries.input");
 //	executeExp4(c, "query12.input");
 	executeExp6(c);
-//	executeExp7(c);
+	executeExp7(c);
     }
 
     // in this exp, we assume we only have one query
