@@ -48,10 +48,10 @@ public class LauncherMain {
 	    throw new NotYetImplementedException();
 	}
 
-//	executeExp1(c, "query12.input");
-//	executeExp2(c, "queries.input");
-//	executeExp3(c, "queries.input");
-//	executeExp4(c, "query12.input");
+	executeExp1(c, "query12.input");
+	executeExp2(c, "queries.input");
+	executeExp3(c, "queries.input");
+	executeExp4(c, "query12.input");
 	executeExp6(c);
 	executeExp7(c);
     }
@@ -359,6 +359,7 @@ public class LauncherMain {
 	    int k = 4;
 	    for (MetaQuery query : queries) {
 		for (int i = 0; i < occurenceNumber + 1; i++) {
+		    List<Query> mfs = new ArrayList<>();
 		    Query q = new Query(query.getContent(),
 			    "lasttab1" + typeDataset, connection);
 		    float tps = (float) 0.0;
@@ -367,11 +368,11 @@ public class LauncherMain {
 			tps = (float) 200.0;
 		    } else {
 			long begin = System.currentTimeMillis();
-			currentAlgo.processAlgo(q);
+			mfs = currentAlgo.processAlgo(q);
 			long end = System.currentTimeMillis();
 			tps = ((float) (end - begin)) / 1000f;
 		    }
-		    System.out.println(tps);
+		    System.out.println(tps + " " + mfs.size());
 		    if (i > 0)
 			expResult.addQueryResult(i - 1, query.getName(), tps);
 
@@ -398,6 +399,7 @@ public class LauncherMain {
 	    int k = 0;
 	    for (char dataset : datasets) {
 		for (int i = 0; i < occurenceNumber + 1; i++) {
+		    List<Query> mfs = new ArrayList<>();
 		    Query q = new Query(query.getContent(),
 			    "lasttab" + dataset + typeDataset, connection);
 		    float tps = (float) 0.0;
@@ -409,11 +411,11 @@ public class LauncherMain {
 			tps = (float) 200.0;
 		    } else {
 			long begin = System.currentTimeMillis();
-			currentAlgo.processAlgo(q);
+			mfs = currentAlgo.processAlgo(q);
 			long end = System.currentTimeMillis();
 			tps = ((float) (end - begin)) / 1000f;
 		    }
-		    System.out.println(tps);
+		    System.out.println(tps + " " + mfs.size());
 		    if (i > 0)
 			expResult.addQueryResultByDataset(i - 1,
 				"" + dataset + typeDataset, tps);
@@ -460,14 +462,15 @@ public class LauncherMain {
 	    ExpResult expResult = new ExpResult(occurenceNumber);
 	    for (AlgoRelaxation currentAlgo : algos) {
 		for (int i = 0; i < occurenceNumber + 1; i++) {
+		    List<Query> mfs = new ArrayList<>();
 		    Query q = new Query(query.getContent(), tableName,
 			    connection);
 		    float tps = (float) 0.0;
 		    long begin = System.currentTimeMillis();
-		    currentAlgo.processAlgo(q);
+		    mfs = currentAlgo.processAlgo(q);
 		    long end = System.currentTimeMillis();
 		    tps = ((float) (end - begin)) / 1000f;
-		    System.out.println(tps);
+		    System.out.println(tps + " " + mfs.size());
 		    if (i > 0)
 			expResult.addQueryResultByDataset(i - 1,
 				"" + currentAlgo, tps);
