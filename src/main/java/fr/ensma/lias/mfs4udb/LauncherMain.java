@@ -48,12 +48,12 @@ public class LauncherMain {
 	    throw new NotYetImplementedException();
 	}
 
-	executeExp1(c, "query12.input");
-	executeExp2(c, "queries.input");
-	executeExp3(c, "queries.input");
-	executeExp4(c, "query12.input");
+//	executeExp1(c, "query12.input");
+//	executeExp2(c, "queries.input");
+//	executeExp3(c, "queries.input");
+//	executeExp4(c, "query12.input");
 	executeExp6(c);
-	executeExp7(c);
+//	executeExp7(c);
     }
 
     // in this exp, we assume we only have one query
