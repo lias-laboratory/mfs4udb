@@ -106,4 +106,24 @@
 			<version>9.4-1201-jdbc4</version>
 		</dependency>
 	</dependencies>
+	
+	   <ciManagement>
+        <system>Jenkins</system>
+        <url>http://s-localforge-lias/jenkins/job/MFS4UDB/</url>
+    </ciManagement>
+    <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <name>Internal Releases</name>
+            <url>http://s-localforge-lias/nexus/content/repositories/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>Internal Snapshots</name>
+            <url>http://s-localforge-lias/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+    <scm>
+        <url>scm:git:http://s-localforge-lias.ensma.fr/gitblit/r/java/mfs4udb.git</url>
+    </scm>
 </project>
