@@ -48,11 +48,11 @@ public class LauncherMain {
 	    throw new NotYetImplementedException();
 	}
 
-	executeExp1(c, "query12.input");
-	executeExp2(c, "queries.input");
-	executeExp3(c, "queries.input");
-	executeExp4(c, "query12.input");
-	executeExp6(c);
+	//executeExp1(c, "query12.input");
+	//executeExp2(c, "queries.input");
+	//executeExp3(c, "queries.input");
+	//executeExp4(c, "query12.input");
+	//executeExp6(c);
 	executeExp7(c);
     }
 
@@ -469,7 +469,11 @@ public class LauncherMain {
 		    long begin = System.currentTimeMillis();
 		    mfs = currentAlgo.processAlgo(q);
 		    long end = System.currentTimeMillis();
-		    tps = ((float) (end - begin)) / 1000f;
+		    tps = ((float) (end - begin));
+		    if (tableName.equals("weather"))
+			tps = ((float) (end - begin)) / 1000f;
+		    else
+			tps = ((float) (end - begin));
 		    System.out.println(tps + " " + mfs.size());
 		    if (i > 0)
 			expResult.addQueryResultByDataset(i - 1,
