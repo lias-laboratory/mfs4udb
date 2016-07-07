@@ -45,6 +45,24 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<version>2.2.1</version>
 				<executions>
@@ -88,4 +106,24 @@
 			<version>9.4-1201-jdbc4</version>
 		</dependency>
 	</dependencies>
+	
+	   <ciManagement>
+        <system>Jenkins</system>
+        <url>http://s-localforge-lias/jenkins/job/MFS4UDB/</url>
+    </ciManagement>
+    <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <name>Internal Releases</name>
+            <url>http://s-localforge-lias/nexus/content/repositories/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <name>Internal Snapshots</name>
+            <url>http://s-localforge-lias/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
+    <scm>
+        <url>scm:git:http://s-localforge-lias.ensma.fr/gitblit/r/java/mfs4udb.git</url>
+    </scm>
 </project>
