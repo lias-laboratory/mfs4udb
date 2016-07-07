@@ -166,9 +166,9 @@ public class LauncherMain {
 
 		@Override
 		public void displayAlgoInformation(Query q) {
-		   // System.out.println("Nb cache : " + q.getNbRepetedQuery());
+		   System.out.println("Nb executed queries : " + q.getNbExecutedQuery());
 		}
-	    }, false, "MCS", chars[i]);
+	    }, true, "MCS", chars[i]);
 
 	    // MBS
 	    executeAlgo(c, metaQueries, new AlgoRelaxation() {
@@ -270,9 +270,9 @@ public class LauncherMain {
 
 		@Override
 		public void displayAlgoInformation(Query q) {
-		    //System.out.println("Nb cache : " + q.getNbRepetedQuery());
+		    System.out.println("Nb queries : " + q.getNbExecutedQuery());
 		}
-	    }, false, "MCS", chars[i]);
+	    }, true, "MCS", chars[i]);
 
 	    // MCS+M
 	    if (chars[i] == 'i') {
