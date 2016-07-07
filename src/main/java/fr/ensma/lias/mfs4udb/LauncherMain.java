@@ -50,8 +50,8 @@ public class LauncherMain {
 
 	//executeExp1(c, "query12.input");
 	//executeExp2(c, "queries.input");
-	//executeExp3(c, "queries.input");
-	//executeExp4(c, "query12.input");
+	executeExp3(c, "queries.input");
+	executeExp4(c, "query12.input");
 	//executeExp6(c);
 	executeExp7(c);
     }
@@ -126,7 +126,7 @@ public class LauncherMain {
 			    + " " + q.getCardinalityMatrix() + " "
 			    + q.getSizeInBytesMatrix());
 		}
-	    }, false, "LBA+M", chars[i]);
+	    }, true, "LBA+M", chars[i]);
 
 	    // LBA without Matrix
 	    executeAlgo(c, metaQueries, new AlgoRelaxation() {
@@ -138,9 +138,9 @@ public class LauncherMain {
 
 		@Override
 		public void displayAlgoInformation(Query q) {
-		    System.out.println("Nb cache : " + q.getNbRepetedQuery());
+		    System.out.println("Nb query: " + q.getNbExecutedQuery() + " Nb cache : " + q.getNbRepetedQuery());
 		}
-	    }, false, "LBA", chars[i]);
+	    }, true, "LBA", chars[i]);
 
 	    // DFS
 	    executeAlgo(c, metaQueries, new AlgoRelaxation() {
@@ -152,7 +152,7 @@ public class LauncherMain {
 
 		@Override
 		public void displayAlgoInformation(Query q) {
-		    System.out.println("Nb cache : " + q.getNbRepetedQuery());
+		    //System.out.println("Nb cache : " + q.getNbRepetedQuery());
 		}
 	    }, false, "DFS", chars[i]);
 
@@ -166,7 +166,7 @@ public class LauncherMain {
 
 		@Override
 		public void displayAlgoInformation(Query q) {
-		    System.out.println("Nb cache : " + q.getNbRepetedQuery());
+		   // System.out.println("Nb cache : " + q.getNbRepetedQuery());
 		}
 	    }, false, "MCS", chars[i]);
 
@@ -180,7 +180,7 @@ public class LauncherMain {
 
 		@Override
 		public void displayAlgoInformation(Query q) {
-		    System.out.println("Nb cache : " + q.getNbRepetedQuery());
+		    //System.out.println("Nb cache : " + q.getNbRepetedQuery());
 		}
 	    }, false, "MBS", chars[i]);
 	}
@@ -213,7 +213,7 @@ public class LauncherMain {
 			    + " " + q.getCardinalityMatrix() + " "
 			    + q.getSizeInBytesMatrix());
 		}
-	    }, false, "LBA+M", chars[i]);
+	    }, true, "LBA+M", chars[i]);
 
 	    // LBA without Matrix
 	    executeAlgo(c, query, new AlgoRelaxation() {
@@ -225,9 +225,9 @@ public class LauncherMain {
 
 		@Override
 		public void displayAlgoInformation(Query q) {
-		    System.out.println("Nb cache : " + q.getNbRepetedQuery());
+		    System.out.println("Nb query : " + q.getNbExecutedQuery() + " Nb cache : " + q.getNbRepetedQuery());
 		}
-	    }, false, "LBA", chars[i]);
+	    }, true, "LBA", chars[i]);
 
 	    // DFS
 	    executeAlgo(c, query, new AlgoRelaxation() {
@@ -239,7 +239,7 @@ public class LauncherMain {
 
 		@Override
 		public void displayAlgoInformation(Query q) {
-		    System.out.println("Nb cache : " + q.getNbRepetedQuery());
+		   // System.out.println("Nb cache : " + q.getNbRepetedQuery());
 		}
 	    }, false, "DFS", chars[i]);
 
@@ -255,8 +255,7 @@ public class LauncherMain {
 
 		    @Override
 		    public void displayAlgoInformation(Query q) {
-			System.out
-				.println("Nb cache : " + q.getNbRepetedQuery());
+			//System.out.println("Nb cache : " + q.getNbRepetedQuery());
 		    }
 		}, false, "DFS+M", chars[i]);
 	    }
@@ -271,7 +270,7 @@ public class LauncherMain {
 
 		@Override
 		public void displayAlgoInformation(Query q) {
-		    System.out.println("Nb cache : " + q.getNbRepetedQuery());
+		    //System.out.println("Nb cache : " + q.getNbRepetedQuery());
 		}
 	    }, false, "MCS", chars[i]);
 
@@ -287,8 +286,7 @@ public class LauncherMain {
 
 		    @Override
 		    public void displayAlgoInformation(Query q) {
-			System.out
-				.println("Nb cache : " + q.getNbRepetedQuery());
+			// System.out.println("Nb cache : " + q.getNbRepetedQuery());
 		    }
 		}, false, "MCS+M", chars[i]);
 	    }
@@ -303,7 +301,7 @@ public class LauncherMain {
 
 		@Override
 		public void displayAlgoInformation(Query q) {
-		    System.out.println("Nb cache : " + q.getNbRepetedQuery());
+		    //System.out.println("Nb cache : " + q.getNbRepetedQuery());
 		}
 	    }, false, "MBS", chars[i]);
 	}
@@ -474,7 +472,10 @@ public class LauncherMain {
 			tps = ((float) (end - begin)) / 1000f;
 		    else
 			tps = ((float) (end - begin));
-		    System.out.println(tps + " " + mfs.size());
+		    System.out.println(tps + " " + mfs.size() + " nb query: " + q.getNbExecutedQuery() + " cache : " + q.getNbRepetedQuery());
+		    System.out.println("Temps Matrix : " + q.timeToComputeMatrix
+			    + " " + q.getCardinalityMatrix() + " "
+			    + q.getSizeInBytesMatrix());
 		    if (i > 0)
 			expResult.addQueryResultByDataset(i - 1,
 				"" + currentAlgo, tps);
