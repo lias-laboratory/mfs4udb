@@ -4,6 +4,7 @@
 	<groupId>fr.ensma.lias</groupId>
 	<artifactId>mfs4udb</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<description>This project implements several algorithms to find Minimal Failing Subqueries (MFSs) and MaXimal Succeeding Subqueries (XSSs) of faling conjunctive queries on uncertain databases.</description>
 	<properties>
 		<!-- Java version we use -->
 		<maven.compiler.source>1.8</maven.compiler.source>
@@ -109,21 +110,21 @@
 	
 	   <ciManagement>
         <system>Jenkins</system>
-        <url>http://s-localforge-lias/jenkins/job/MFS4UDB/</url>
+	<url>https://ci-lias.ensma.fr/job/MFS4UDB/</url>
     </ciManagement>
     <distributionManagement>
         <repository>
             <id>releases</id>
             <name>Internal Releases</name>
-            <url>http://s-localforge-lias/nexus/content/repositories/releases</url>
+            <url>http://s-nexus-lias.ensma.fr/content/repositories/releases</url>
         </repository>
         <snapshotRepository>
             <id>snapshots</id>
             <name>Internal Snapshots</name>
-            <url>http://s-localforge-lias/nexus/content/repositories/snapshots</url>
+            <url>http://s-nexus-lias.ensma.fr/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
     <scm>
-        <url>scm:git:http://s-localforge-lias.ensma.fr/gitblit/r/java/mfs4udb.git</url>
+	    <url>scm:git:https://git.lias-lab.fr/r/exploiting/mfs4udb.git</url>
     </scm>
 </project>
