@@ -48,15 +48,67 @@ public class LauncherMain {
 	    throw new NotYetImplementedException();
 	}
 
-	//executeExp1(c, "query12.input");
+	executeExp0(c);
+	executeExp1(c, "query25.input");
+	executeExp01(c, "query25.input");
 	//executeExp2(c, "queries.input");
 	executeExp3(c, "queries.input");
-	executeExp4(c, "query12.input"); 
-	//executeExp6(c);
+	executeExp4(c, "query25.input"); 
 	executeExp7(c);
     }
 
-    // in this exp, we assume we only have one query
+    // MBS with SHD
+    private void executeExp0(Connection c) throws Exception {
+    	System.out.println("-------- Exp 0 getAllMFSWithMBStrans---------");
+    	String[] fileNames = { "query8.input", "query6.input",
+    		"query15.input" };
+    	String[] tableNames = { "nba", "house", "weather" };
+    	BufferedWriter fichier = new BufferedWriter(new FileWriter("exp0.csv"));
+    	for (int i = 0; i < fileNames.length; i++) {
+    	    List<MetaQuery> metaQueries = this.getMetaQueries(fileNames[i]);
+    	    if (metaQueries == null || metaQueries.size() == 0) {
+    		throw new NotYetImplementedException();
+    	    }
+    	    MetaQuery query = metaQueries.get(0);
+    	    Query q = new Query(query.getContent(), tableNames[i], c);
+    	    //System.out.println("-------- " + q.toString() + " ---------");
+    	    List<Query> foundMFS = q.getAllMFSWithMBStrans(DEGREE_EXP, 0);
+    	    fichier.write(foundMFS.size() + "\n");
+    	    //System.out.println("-------- " + foundMFS.size() + " ---------");
+    	    //for(Query qq : foundMFS){
+    	    //	System.out.println("-------- MFS "+qq);
+    	    //}
+    	}
+    	fichier.close();
+        }
+    
+    private void executeExp01(Connection c, String fileName) throws Exception {
+
+    	List<MetaQuery> metaQueries = this.getMetaQueries(fileName);
+    	if (metaQueries == null || metaQueries.size() == 0) {
+    	    throw new NotYetImplementedException();
+    	}
+    	MetaQuery query = metaQueries.get(0);
+    	int[] cards = { 0, 1, 2, 4, 8 };
+    	char[] chars = { 'a', 'c', 'i' };
+
+    	for (int i = 0; i < chars.length; i++) {
+    	    System.out.println("-------- " + chars[i] + " ---------");
+    	    BufferedWriter fichier = new BufferedWriter(
+    		    new FileWriter("exp01-" + chars[i] + ".csv"));
+    	    for (int j = 0; j < cards.length; j++) {
+    		Query q = new Query(query.getContent(),
+    			"lasttab" + cards[j] + chars[i], c);
+    		//Query q = new Query(query.getContent(),
+        	//		"lasttab1a" , c);
+    		List<Query> foundMFS = q.getAllMFSWithMBStrans(DEGREE_EXP,(1+i));
+    		fichier.write(foundMFS.size() + "\n");
+    	    }
+    	    fichier.close();
+    	}
+        }
+    
+    
     private void executeExp1(Connection c, String fileName) throws Exception {
 
 	List<MetaQuery> metaQueries = this.getMetaQueries(fileName);
@@ -74,6 +126,8 @@ public class LauncherMain {
 	    for (int j = 0; j < cards.length; j++) {
 		Query q = new Query(query.getContent(),
 			"lasttab" + cards[j] + chars[i], c);
+	    //Query q = new Query(query.getContent(),
+        //		"lasttab1a" , c);
 		List<Query> foundMFS = q.getAllMFSWithMBS(DEGREE_EXP);
 		fichier.write(foundMFS.size() + "\n");
 	    }
@@ -183,7 +237,23 @@ public class LauncherMain {
 		    //System.out.println("Nb cache : " + q.getNbRepetedQuery());
 		}
 	    }, false, "MBS", chars[i]);
-	}
+	    
+	    // MBS trans
+	    executeAlgo(c, metaQueries, new AlgoRelaxation() {
+		@Override
+		public List<Query> processAlgo(Query query) throws Exception {
+		    return query.getAllMFSWithMBStrans(DEGREE_EXP, 3);
+		}
+	    }, new LogRelaxation() {
+
+		@Override
+		public void displayAlgoInformation(Query q) {
+		    //System.out.println("Nb cache : " + q.getNbRepetedQuery());
+		}
+	    }, false, "MBS Trans", chars[i]);
+	    
+	}	
+	
     }
 
     // this exp should only use one query
@@ -304,6 +374,20 @@ public class LauncherMain {
 		    //System.out.println("Nb cache : " + q.getNbRepetedQuery());
 		}
 	    }, false, "MBS", chars[i]);
+	    
+	    // MBS trans
+	    executeAlgo(c, query, new AlgoRelaxation() {
+		@Override
+		public List<Query> processAlgo(Query query) throws Exception {
+		    return query.getAllMFSWithMBStrans(DEGREE_EXP, 4);
+		}
+	    }, new LogRelaxation() {
+
+		@Override
+		public void displayAlgoInformation(Query q) {
+		    //System.out.println("Nb cache : " + q.getNbRepetedQuery());
+		}
+	    }, false, "MBS Trans", chars[i]);
 	}
     }
 
@@ -321,6 +405,10 @@ public class LauncherMain {
 	    Query q = new Query(query.getContent(), tableNames[i], c);
 	    List<Query> foundMFS = q.getAllMFSWithLBA(DEGREE_EXP,true);
 	    fichier.write(foundMFS.size() + "\n");
+	    System.out.println("-------- MFS EXP6 getAllMFSWithLBA -------------------------------------- ");
+	    for(Query qq : foundMFS){
+	    	System.out.println("-------- MFS "+qq);
+	    }
 	}
 	fichier.close();
     }
@@ -359,7 +447,9 @@ public class LauncherMain {
 		for (int i = 0; i < occurenceNumber + 1; i++) {
 		    List<Query> mfs = new ArrayList<>();
 		    Query q = new Query(query.getContent(),
-			    "lasttab1" + typeDataset, connection);
+			   "lasttab1" + typeDataset, connection);
+		    //Query q = new Query(query.getContent(),
+			//	    "lasttab1a" , connection);
 		    float tps = (float) 0.0;
 		    if (algoName.equals("DFS") && k > 12
 			    && typeDataset != 'c') {
@@ -400,6 +490,8 @@ public class LauncherMain {
 		    List<Query> mfs = new ArrayList<>();
 		    Query q = new Query(query.getContent(),
 			    "lasttab" + dataset + typeDataset, connection);
+		    //Query q = new Query(query.getContent(),
+			//	    "lasttab1a", connection);
 		    float tps = (float) 0.0;
 		    if ((algoName.equals("DFS") && k > 1 && typeDataset != 'c')
 			    || (algoName.equals("MCS") && k > 3
@@ -456,7 +548,13 @@ public class LauncherMain {
 		public List<Query> processAlgo(Query query) throws Exception {
 		    return query.getAllMFSWithMCS(DEGREE_EXP, false);
 		}
-	    } };
+	    }, new AlgoRelaxation() {
+		@Override
+		public List<Query> processAlgo(Query query) throws Exception {
+			 return query.getAllMFSWithMBStrans(DEGREE_EXP, 7);
+		}
+		}
+	    };
 	    ExpResult expResult = new ExpResult(occurenceNumber);
 	    for (AlgoRelaxation currentAlgo : algos) {
 		for (int i = 0; i < occurenceNumber + 1; i++) {
@@ -565,8 +663,8 @@ public class LauncherMain {
 	    
 	    Class.forName(config.postgresqlDriver());
 	    Connection c = DriverManager.getConnection(
-		    config.postgresqlUrl(), "liasidd",
-		    "psql");
+		    config.postgresqlUrl(), "postgres",
+		    "lias");
 	    return c;
 	} catch (SQLException | ClassNotFoundException e)  {
 	    e.printStackTrace();

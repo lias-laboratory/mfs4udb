@@ -1,5 +1,10 @@
 package fr.ensma.lias.mfs4udb;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -60,6 +65,8 @@ public class Query {
 
     protected float timeToComputeMatrix;
 
+    private static final String SHD_PATH = "C:\\Users\\Anatolie\\Desktop\\shd31";
+    
     public static int getNbRepetedQuery() {
 	return nbRepetedQuery;
     }
@@ -279,6 +286,15 @@ public class Query {
 	return allMFS.get(degree);
     }
 
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    public List<Query> getAllMFSWithMBStrans(double degree, int i) throws Exception {
+    	// if (allMFS.get(degree) == null) {
+    	runApprocheTrans(this, degree, i);
+    	// }
+    	return allMFS.get(degree);
+        }
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    
     public List<Query> getAllXSSWithDFS(double degree) throws Exception {
 	// if (allXSS.get(degree) == null) {
 	runDFS(degree);
@@ -813,6 +829,115 @@ public class Query {
     // ============================================================================
     // //
 
+// ======================== Debut Approche avec Trans Min ==================================
+    
+    public List<List<Integer>> runApprocheTrans(Query q, double degree, int k) throws Exception{
+    	long beginx = System.currentTimeMillis();
+		List<List<Integer>> ssq=new ArrayList<List<Integer>>();
+		ssq=calculssq(q, degree);
+		//System.out.println("exec ssq");
+		long endx = System.currentTimeMillis();
+		float tpsx = ((float) (endx - beginx)) / 1000f;
+		//System.out.println("*************************************** Temps reponse exp0 xss: " + tpsx);
+		//for (List<Integer> l : ssq) {
+		//	System.out.println(l);
+		//}
+		long beginc = System.currentTimeMillis();
+		try {
+			//File file = new File(SHD_PATH + "\\xss"+k+".txt");
+			
+			//il faut remplacer la partie C:\\Users\\Anatolie\\Desktop\\shd31 par le chemin vers shd...
+			File filecomp = new File(SHD_PATH + "\\xsscomp"+k+".txt");
+			//FileWriter fw = new FileWriter(file);
+			FileWriter fwc = new FileWriter(filecomp);
+			try {
+				//System.out.println("pred size "+q.predicates.size());
+				int taille=q.predicates.size();
+				
+				
+				for (List<Integer> l : ssq) {
+					List<Integer> all = new ArrayList<Integer>();
+					for (int i=0;i<taille;i++){
+						all.add(i+1);
+					}
+					//for (Integer n : all) {
+					//	System.out.println(n);
+					//}
+					all.removeAll(l);
+					//System.out.println("complement ");
+					//for (Integer n : all) {
+					//	System.out.println(n);
+					//}
+					//for (Integer i : l) {
+					//	fw.write(String.valueOf(i)+" ");
+            		//}
+					for (Integer i : all) {
+						fwc.write(String.valueOf(i-1)+" ");
+            		}
+					//fw.write(System.lineSeparator());
+					fwc.write(System.lineSeparator());
+            	}				
+			}finally {
+				//fw.close();
+				fwc.close();
+				//System.out.println("Stockage fichier XSS");
+			}
+		}catch (Exception e){
+        System.out.println(" caught a " + e.getClass() +
+                "\n with message: " + e.getMessage());
+    }
+		long endc = System.currentTimeMillis();
+		float tpsc = ((float) (endc - beginc)) / 1000f;
+		//System.out.println("*************************************** Temps reponse exp0 cmp: " + tpsc);
+		
+		
+		///////// cmd ///////////////////
+		
+		//il faut remplacer la partie C:\\Users\\Anatolie\\Desktop\\shd31 par le chemin vers shd...
+		//eventuellement modifier la commande sur linux
+		long beginm = System.currentTimeMillis();
+	    ProcessBuilder builder = new ProcessBuilder(
+	            "cmd.exe", "/c", "cd \"" + SHD_PATH + "\" && shd 0 xsscomp"+k+".txt mfs"+k+".txt");
+	        builder.redirectErrorStream(true);
+	        Process p = builder.start();
+	        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+	        String line;
+	        while (true) {
+	            line = r.readLine();
+	            if (line == null) { break; }
+	            //System.out.println(line);
+	        }
+	           
+		///////// retoure des MFS ///////
+	        
+	    List<List<Integer>> listMFS = new ArrayList<List<Integer>>();
+	    //il faut remplacer la partie C:\\Users\\Anatolie\\Desktop\\shd31 par le chemin vers shd...
+	    FileReader fr = new FileReader(SHD_PATH + "\\mfs"+k+".txt"); 
+	    BufferedReader br = new BufferedReader(fr); 
+	    String s; 
+	    while((s = br.readLine()) != null) { 
+	    	String[] parts = s.split(" ");
+	    	//System.out.println("file reader "+s); 
+	    	List<Integer> sv=new ArrayList<Integer>();
+	    	for(int i=0;i<parts.length;i++){
+	    		//System.out.println("slpit "+parts[i]);
+	    		sv.add(Integer.parseInt(parts[i]) +1);
+	    	}
+	    	listMFS.add(sv);
+	    	//System.out.println("mfssss   "+sv);
+	    } 
+	    fr.close(); 
+	    //System.out.println("mfssss taille  "+listMFS.size());
+	    List<Query> mfsQ = convert(listMFS);
+		allMFS.put(degree, mfsQ);
+		long endm = System.currentTimeMillis();
+		float tpsm = ((float) (endm - beginm)) / 1000f;
+		//System.out.println("*************************************** Temps reponse exp0 mfs: " + tpsm);
+	        return listMFS;
+		
+	}
+    // ======================== Fin Approche avec Trans Min ====================================
+    
     // =========================DébutApproche===================================================
     // //
 
@@ -849,7 +974,7 @@ public class Query {
 		    + predicate.getProperty() + "_V >= " + degree + ")");
 	}
 	query = selectClause.append(fromClause).append(whereClause).toString();
-	// System.out.println(query);
+	//System.out.println("ssq " +query);
 	Statement reqOracle = session.createStatement();
 	ResultSet rsett = reqOracle.executeQuery(query);
 	while (rsett.next()) {
@@ -876,6 +1001,7 @@ public class Query {
 	    }
 	    if (ajout)
 		ssq.add(s);
+	    //System.out.println("xss " +s);
 	}
 	reqOracle.close();
 	return ssq;
