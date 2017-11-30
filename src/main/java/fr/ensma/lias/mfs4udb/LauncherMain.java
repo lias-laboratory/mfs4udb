@@ -663,8 +663,8 @@ public class LauncherMain {
 	    
 	    Class.forName(config.postgresqlDriver());
 	    Connection c = DriverManager.getConnection(
-		    config.postgresqlUrl(), "postgres",
-		    "lias");
+		    config.postgresqlUrl(), config.postgresqlLogin(),
+		    config.postgresqlPassword());
 	    return c;
 	} catch (SQLException | ClassNotFoundException e)  {
 	    e.printStackTrace();
