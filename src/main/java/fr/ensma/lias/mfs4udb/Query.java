@@ -65,7 +65,7 @@ public class Query {
 
     protected float timeToComputeMatrix;
 
-    private static final String SHD_PATH = "C:\\Users\\Anatolie\\Desktop\\shd31";
+    private static final String SHD_PATH = "/home/lias/shd";
     
     public static int getNbRepetedQuery() {
 	return nbRepetedQuery;
@@ -847,7 +847,7 @@ public class Query {
 			//File file = new File(SHD_PATH + "\\xss"+k+".txt");
 			
 			//il faut remplacer la partie C:\\Users\\Anatolie\\Desktop\\shd31 par le chemin vers shd...
-			File filecomp = new File(SHD_PATH + "\\xsscomp"+k+".txt");
+			File filecomp = new File(SHD_PATH + "/xsscomp"+k+".txt");
 			//FileWriter fw = new FileWriter(file);
 			FileWriter fwc = new FileWriter(filecomp);
 			try {
@@ -897,22 +897,25 @@ public class Query {
 		//eventuellement modifier la commande sur linux
 		long beginm = System.currentTimeMillis();
 	    ProcessBuilder builder = new ProcessBuilder(
-	            "cmd.exe", "/c", "cd \"" + SHD_PATH + "\" && shd 0 xsscomp"+k+".txt mfs"+k+".txt");
+	            "sh", "-c", "cd /home/lias/shd && ./shd 0 xsscomp"+k+".txt mfs"+k+".txt");
+	           // "sh ", "-c", "cd \"" + SHD_PATH + "\" && shd 0 xsscomp"+k+".txt mfs"+k+".txt");
 	        builder.redirectErrorStream(true);
 	        Process p = builder.start();
-	        BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+	        BufferedReader r = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 	        String line;
 	        while (true) {
 	            line = r.readLine();
 	            if (line == null) { break; }
-	            //System.out.println(line);
+	            System.out.println(line);
 	        }
 	           
 		///////// retoure des MFS ///////
-	        
+	       
+		Thread.sleep(2000);
+ 
 	    List<List<Integer>> listMFS = new ArrayList<List<Integer>>();
 	    //il faut remplacer la partie C:\\Users\\Anatolie\\Desktop\\shd31 par le chemin vers shd...
-	    FileReader fr = new FileReader(SHD_PATH + "\\mfs"+k+".txt"); 
+	    FileReader fr = new FileReader(SHD_PATH + "/mfs"+k+".txt"); 
 	    BufferedReader br = new BufferedReader(fr); 
 	    String s; 
 	    while((s = br.readLine()) != null) { 

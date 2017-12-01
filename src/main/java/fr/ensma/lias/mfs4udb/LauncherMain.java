@@ -49,12 +49,12 @@ public class LauncherMain {
 	}
 
 	executeExp0(c);
-	executeExp1(c, "query25.input");
-	executeExp01(c, "query25.input");
+	executeExp1(c, "query16.input");
+	executeExp01(c, "query16.input");
 	//executeExp2(c, "queries.input");
-	executeExp3(c, "queries.input");
-	executeExp4(c, "query25.input"); 
-	executeExp7(c);
+	//executeExp3(c, "queries.input");
+	executeExp4(c, "query16.input"); 
+	//executeExp7(c);
     }
 
     // MBS with SHD
