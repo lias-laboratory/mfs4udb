@@ -24,6 +24,8 @@ import fr.ensma.lias.mfs4udb.cfg.MFS4UDBConfig;
 public class LauncherMain {
 
     private static final double DEGREE_EXP = 0.9;
+	
+	protected String SHD_PATH = "/home/lias/shd";
 
     private MFS4UDBConfig config;
 
@@ -48,18 +50,133 @@ public class LauncherMain {
 	    throw new NotYetImplementedException();
 	}
 
-	executeExp0(c);
-	executeExp1(c, "query16.input");
-	executeExp01(c, "query16.input");
-	//executeExp2(c, "queries.input");
-	//executeExp3(c, "queries.input");
-	executeExp4(c, "query16.input"); 
-	//executeExp7(c);
+	
+	// save MFS and XSS for synthetic datasets with MDMB, and LBAwithMatrix
+	executeExpSave1(c, "query18.input");
+	executeExpSave2(c, "queries.input");
+	
+	// MBS with SHD on real datasets
+//	executeExp0(c);
+
+	// MBS with SHD on synthetic datasets nbr(MFS) vs dataset size
+//	executeExp01(c, "query18.input");
+
+	// MBS on synthetic datasets nbr(MFS) vs dataset size
+//	executeExp1(c, "query18.input");
+
+	// MBS with SHD nbr(MFS) on synthetic datasets vs query size 
+//	executeExp2(c, "queries.input");
+
+	// Algos on synthetic datasets (a,c,i) vs query size 
+//  executeExp3(c, "queries.input");
+
+	// Algos on synthetic datasets (a,c,i) vs dataset size
+//	executeExp4(c, "query18.input"); 
+
+	// Caracteristics of real dataset with LBA
+//	executeExp6(c);
+
+	// Algos on real datasets
+//	executeExp7(c);
     }
 
-    // MBS with SHD
+	// Save MFS and XSS vs dataset size
+    private void executeExpSave1(Connection c, String fileName) throws Exception {
+
+    	List<MetaQuery> metaQueries = this.getMetaQueries(fileName);
+    	if (metaQueries == null || metaQueries.size() == 0) {
+    	    throw new NotYetImplementedException();
+    	}
+    	MetaQuery query = metaQueries.get(0);
+    	int[] cards = { 0, 1, 2, 4, 8 };
+    	char[] chars = { 'a', 'c', 'i' };
+
+    	for (int i = 0; i < chars.length; i++) {
+    	    System.out.println("-------- " + chars[i] + " ---------");
+    	    BufferedWriter fichier1 = new BufferedWriter(
+    		    new FileWriter("expSave1MFSwithMDMB-" + chars[i] + ".txt"));
+			BufferedWriter fichier2 = new BufferedWriter(
+    		    new FileWriter("expSave1MFSwithLBAwithMatrix-" + chars[i] + ".txt"));
+			BufferedWriter fichier3 = new BufferedWriter(
+    		    new FileWriter("expSave1XSSwithLBAwithMatrix-" + chars[i] + ".txt"));
+    	    for (int j = 0; j < cards.length; j++) {
+    		Query q = new Query(query.getContent(),
+    			"lasttab" + cards[j] + chars[i], c);
+    		
+			List<Query> foundMFS1 = q.getAllMFSWithMDMB(DEGREE_EXP,(1+i), SHD_PATH);
+    		fichier1.write("Nbr MFS for "+ cards[j] +" "+ chars[i]+ " est : " +foundMFS1.size() + "\n");
+			for (Query qq : foundMFS1 ){
+				fichier1.write(qq + "\n");
+			}
+    	    
+			List<Query> foundMFS2 = q.getAllMFSWithLBA(DEGREE_EXP, true);
+    		fichier2.write("Nbr MFS for "+ cards[j] +" "+ chars[i]+ " est : " + foundMFS2.size() + "\n");
+			for (Query qq : foundMFS2 ){
+				fichier2.write(qq + "\n");
+			}
+			
+			List<Query> foundXSS = q.getAllXSSWithLBA(DEGREE_EXP, true, false);
+    		fichier3.write("Nbr XSS for "+ cards[j] +" "+ chars[i]+ " est : " +foundXSS.size() + "\n");
+			for (Query qq : foundXSS ){
+				fichier3.write(qq + "\n");
+			}
+    	    }
+    	    fichier1.close();
+			fichier2.close();
+			fichier3.close();
+    	}
+		
+        }
+		
+	// Save MFS and XSS vs query size
+    private void executeExpSave2(Connection c, String fileName) throws Exception {
+
+	List<MetaQuery> metaQueries = this.getMetaQueries(fileName);
+	if (metaQueries == null) {
+	    throw new NotYetImplementedException();
+	}
+	char[] chars = { 'a', 'c', 'i' };
+
+	for (int i = 0; i < chars.length; i++) {
+	    System.out.println("-------- " + chars[i] + " ---------");
+	    BufferedWriter fichier1 = new BufferedWriter(
+		    new FileWriter("expSave2MFSwithMDMB-" + chars[i] + ".txt"));
+		BufferedWriter fichier2 = new BufferedWriter(
+    		    new FileWriter("expSave2MFSwithLBAwithMatrix-" + chars[i] + ".txt"));
+			BufferedWriter fichier3 = new BufferedWriter(
+    		    new FileWriter("expSave2XSSwithLBAwithMatrix-" + chars[i] + ".txt"));
+	    for (MetaQuery query : metaQueries) {
+		Query q = new Query(query.getContent(), "lasttab1" + chars[i],
+			c);
+		//List<Query> foundMFS = q.getAllMFSWithMCS(DEGREE_EXP, true);
+    	List<Query> foundMFS1 = q.getAllMFSWithMDMB(DEGREE_EXP,(1+i), SHD_PATH);
+		fichier1.write("Nbr MFS for "+ chars[i]+ " est : " +foundMFS1.size() + "\n");
+		for (Query qq : foundMFS1 ){
+				fichier1.write(qq + "\n");
+			}
+	    
+		List<Query> foundMFS2 = q.getAllMFSWithLBA(DEGREE_EXP, true);
+    		fichier2.write("Nbr MFS for "+ chars[i]+ " est : " +foundMFS2.size() + "\n");
+			for (Query qq : foundMFS2 ){
+				fichier2.write(qq + "\n");
+			}
+			
+		List<Query> foundXSS = q.getAllXSSWithLBA(DEGREE_EXP, true, false);
+			fichier3.write("Nbr XSS for "+ chars[i]+ " est : " +foundXSS.size() + "\n");
+			for (Query qq : foundXSS ){
+				fichier3.write(qq + "\n");
+			}
+		
+		}
+	    fichier1.close();
+		fichier2.close();
+		fichier3.close();
+	}
+    }
+	
+    // MBS with SHD on real datasets 
     private void executeExp0(Connection c) throws Exception {
-    	System.out.println("-------- Exp 0 getAllMFSWithMBStrans---------");
+    	System.out.println("-------- Exp 0 getAllMFSWithMDMB---------");
     	String[] fileNames = { "query8.input", "query6.input",
     		"query15.input" };
     	String[] tableNames = { "nba", "house", "weather" };
@@ -71,17 +188,13 @@ public class LauncherMain {
     	    }
     	    MetaQuery query = metaQueries.get(0);
     	    Query q = new Query(query.getContent(), tableNames[i], c);
-    	    //System.out.println("-------- " + q.toString() + " ---------");
-    	    List<Query> foundMFS = q.getAllMFSWithMBStrans(DEGREE_EXP, 0);
+    	    List<Query> foundMFS = q.getAllMFSWithMDMB(DEGREE_EXP, 0, SHD_PATH);
     	    fichier.write(foundMFS.size() + "\n");
-    	    //System.out.println("-------- " + foundMFS.size() + " ---------");
-    	    //for(Query qq : foundMFS){
-    	    //	System.out.println("-------- MFS "+qq);
-    	    //}
     	}
     	fichier.close();
         }
     
+	// MBS with SHD on synthetic datasets
     private void executeExp01(Connection c, String fileName) throws Exception {
 
     	List<MetaQuery> metaQueries = this.getMetaQueries(fileName);
@@ -99,16 +212,14 @@ public class LauncherMain {
     	    for (int j = 0; j < cards.length; j++) {
     		Query q = new Query(query.getContent(),
     			"lasttab" + cards[j] + chars[i], c);
-    		//Query q = new Query(query.getContent(),
-        	//		"lasttab1a" , c);
-    		List<Query> foundMFS = q.getAllMFSWithMBStrans(DEGREE_EXP,(1+i));
+    		List<Query> foundMFS = q.getAllMFSWithMDMB(DEGREE_EXP,(1+i), SHD_PATH);
     		fichier.write(foundMFS.size() + "\n");
     	    }
     	    fichier.close();
     	}
         }
     
-    
+    // MBS on synthetic datasets
     private void executeExp1(Connection c, String fileName) throws Exception {
 
 	List<MetaQuery> metaQueries = this.getMetaQueries(fileName);
@@ -126,8 +237,6 @@ public class LauncherMain {
 	    for (int j = 0; j < cards.length; j++) {
 		Query q = new Query(query.getContent(),
 			"lasttab" + cards[j] + chars[i], c);
-	    //Query q = new Query(query.getContent(),
-        //		"lasttab1a" , c);
 		List<Query> foundMFS = q.getAllMFSWithMBS(DEGREE_EXP);
 		fichier.write(foundMFS.size() + "\n");
 	    }
@@ -135,6 +244,7 @@ public class LauncherMain {
 	}
     }
 
+	// MBS with SHD nbr(MFS) on synthetic datasets (a,c,i)
     private void executeExp2(Connection c, String fileName) throws Exception {
 
 	List<MetaQuery> metaQueries = this.getMetaQueries(fileName);
@@ -150,13 +260,15 @@ public class LauncherMain {
 	    for (MetaQuery query : metaQueries) {
 		Query q = new Query(query.getContent(), "lasttab1" + chars[i],
 			c);
-		List<Query> foundMFS = q.getAllMFSWithMCS(DEGREE_EXP, true);
+		//List<Query> foundMFS = q.getAllMFSWithMCS(DEGREE_EXP, true);
+    		List<Query> foundMFS = q.getAllMFSWithMDMB(DEGREE_EXP,(1+i), SHD_PATH);
 		fichier.write(foundMFS.size() + "\n");
 	    }
 	    fichier.close();
 	}
     }
 
+	// Algos on synthetic datasets (a,c,i) vs query size 
     private void executeExp3(Connection c, String fileName) {
 
 	List<MetaQuery> metaQueries = this.getMetaQueries(fileName);
@@ -237,12 +349,12 @@ public class LauncherMain {
 		    //System.out.println("Nb cache : " + q.getNbRepetedQuery());
 		}
 	    }, false, "MBS", chars[i]);
-	    
-	    // MBS trans
+    
+	    // MBS and SHD
 	    executeAlgo(c, metaQueries, new AlgoRelaxation() {
 		@Override
 		public List<Query> processAlgo(Query query) throws Exception {
-		    return query.getAllMFSWithMBStrans(DEGREE_EXP, 3);
+		    return query.getAllMFSWithMDMB(DEGREE_EXP, 3, SHD_PATH);
 		}
 	    }, new LogRelaxation() {
 
@@ -256,7 +368,8 @@ public class LauncherMain {
 	
     }
 
-    // this exp should only use one query
+    // Algos on synthetic datasets (a,c,i) vs dataset size
+	// this exp should only use one query
     private void executeExp4(Connection c, String fileName) {
 
 	List<MetaQuery> metaQueries = this.getMetaQueries(fileName);
@@ -379,7 +492,7 @@ public class LauncherMain {
 	    executeAlgo(c, query, new AlgoRelaxation() {
 		@Override
 		public List<Query> processAlgo(Query query) throws Exception {
-		    return query.getAllMFSWithMBStrans(DEGREE_EXP, 4);
+		    return query.getAllMFSWithMDMB(DEGREE_EXP, 4, SHD_PATH);
 		}
 	    }, new LogRelaxation() {
 
@@ -391,6 +504,7 @@ public class LauncherMain {
 	}
     }
 
+	// Caracteristics of real dataset with LBA
     private void executeExp6(Connection c) throws Exception {
 	String[] fileNames = { "query8.input", "query6.input",
 		"query15.input" };
@@ -413,6 +527,7 @@ public class LauncherMain {
 	fichier.close();
     }
 
+	// Algos on real datasets
     private void executeExp7(Connection c) throws Exception {
 	String[] fileNames = { "query8.input", "query6.input",
 		"query15.input" };
@@ -551,7 +666,7 @@ public class LauncherMain {
 	    }, new AlgoRelaxation() {
 		@Override
 		public List<Query> processAlgo(Query query) throws Exception {
-			 return query.getAllMFSWithMBStrans(DEGREE_EXP, 7);
+			 return query.getAllMFSWithMDMB(DEGREE_EXP, 7, SHD_PATH);
 		}
 		}
 	    };

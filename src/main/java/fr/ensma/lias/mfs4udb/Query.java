@@ -65,7 +65,7 @@ public class Query {
 
     protected float timeToComputeMatrix;
 
-    private static final String SHD_PATH = "/home/lias/shd";
+    //private final String SHD_PATH = "/home/lias/shd";
     
     public static int getNbRepetedQuery() {
 	return nbRepetedQuery;
@@ -286,14 +286,12 @@ public class Query {
 	return allMFS.get(degree);
     }
 
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    public List<Query> getAllMFSWithMBStrans(double degree, int i) throws Exception {
+    public List<Query> getAllMFSWithMDMB(double degree, int i, String shdPath) throws Exception {
     	// if (allMFS.get(degree) == null) {
-    	runApprocheTrans(this, degree, i);
+    	runApprocheMDMB(this, degree, i, shdPath);
     	// }
     	return allMFS.get(degree);
         }
-    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     
     public List<Query> getAllXSSWithDFS(double degree) throws Exception {
 	// if (allXSS.get(degree) == null) {
@@ -650,9 +648,6 @@ public class Query {
 
     // Ajout Chourouk
 
-    // =========================DébutMcSherry===================================================
-    // //
-
     public List<List<Integer>> calculInterCombinaisons(
 	    List<List<Integer>> allCombinaisons, List<Integer> model,
 	    List<List<Integer>> list, int o, int size) {
@@ -825,16 +820,14 @@ public class Query {
 	}
 	return false;
     }
-
-    // ============================================================================
-    // //
-
-// ======================== Debut Approche avec Trans Min ==================================
     
-    public List<List<Integer>> runApprocheTrans(Query q, double degree, int k) throws Exception{
+    public List<List<Integer>> runApprocheMDMB(Query q, double degree, int k, String shdPath) throws Exception{
+		//this.SHD_PATH = shdPath;
     	long beginx = System.currentTimeMillis();
 		List<List<Integer>> ssq=new ArrayList<List<Integer>>();
 		ssq=calculssq(q, degree);
+		List<Query> xssQ = convert(ssq);
+		allXSS.put(degree, xssQ);
 		//System.out.println("exec ssq");
 		long endx = System.currentTimeMillis();
 		float tpsx = ((float) (endx - beginx)) / 1000f;
@@ -844,10 +837,8 @@ public class Query {
 		//}
 		long beginc = System.currentTimeMillis();
 		try {
-			//File file = new File(SHD_PATH + "\\xss"+k+".txt");
 			
-			//il faut remplacer la partie C:\\Users\\Anatolie\\Desktop\\shd31 par le chemin vers shd...
-			File filecomp = new File(SHD_PATH + "/xsscomp"+k+".txt");
+			File filecomp = new File(shdPath + "/xsscomp"+k+".txt");
 			//FileWriter fw = new FileWriter(file);
 			FileWriter fwc = new FileWriter(filecomp);
 			try {
@@ -890,18 +881,15 @@ public class Query {
 		float tpsc = ((float) (endc - beginc)) / 1000f;
 		//System.out.println("*************************************** Temps reponse exp0 cmp: " + tpsc);
 		
-		
-		///////// cmd ///////////////////
-		
-		//il faut remplacer la partie C:\\Users\\Anatolie\\Desktop\\shd31 par le chemin vers shd...
 		//eventuellement modifier la commande sur linux
 		long beginm = System.currentTimeMillis();
 	    ProcessBuilder builder = new ProcessBuilder(
 	            "sh", "-c", "cd /home/lias/shd && ./shd 0 xsscomp"+k+".txt mfs"+k+".txt");
-	           // "sh ", "-c", "cd \"" + SHD_PATH + "\" && shd 0 xsscomp"+k+".txt mfs"+k+".txt");
+	       
 	        builder.redirectErrorStream(true);
 	        Process p = builder.start();
-	        BufferedReader r = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+	        p.waitFor();
+		BufferedReader r = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 	        String line;
 	        while (true) {
 	            line = r.readLine();
@@ -909,13 +897,10 @@ public class Query {
 	            System.out.println(line);
 	        }
 	           
-		///////// retoure des MFS ///////
-	       
-		Thread.sleep(2000);
+		
  
 	    List<List<Integer>> listMFS = new ArrayList<List<Integer>>();
-	    //il faut remplacer la partie C:\\Users\\Anatolie\\Desktop\\shd31 par le chemin vers shd...
-	    FileReader fr = new FileReader(SHD_PATH + "/mfs"+k+".txt"); 
+	    FileReader fr = new FileReader(shdPath + "/mfs"+k+".txt"); 
 	    BufferedReader br = new BufferedReader(fr); 
 	    String s; 
 	    while((s = br.readLine()) != null) { 
@@ -939,11 +924,7 @@ public class Query {
 	        return listMFS;
 		
 	}
-    // ======================== Fin Approche avec Trans Min ====================================
-    
-    // =========================DébutApproche===================================================
-    // //
-
+   
     public List<List<Integer>> runMBS(Query q, double degree) throws Exception {
 	List<List<Integer>> ssq = new ArrayList<List<Integer>>();
 	ssq = calculssq(q, degree);
@@ -960,7 +941,8 @@ public class Query {
 	    throws Exception {
 	List<List<Integer>> ssq = new ArrayList<List<Integer>>();
 	String query = null;
-	StringBuffer selectClause = new StringBuffer("SELECT DISTINCT ");
+	// StringBuffer selectClause = new StringBuffer("SELECT "); 
+	StringBuffer selectClause = new StringBuffer("SELECT DISTINCT "); 
 	StringBuffer fromClause = new StringBuffer(" FROM " + tableName);
 	StringBuffer whereClause = new StringBuffer(" WHERE ");
 
@@ -971,8 +953,8 @@ public class Query {
 		whereClause.append(" OR ");
 	    }
 	    selectClause.append("CASE WHEN " + predicate + " AND "
-		    + predicate.getProperty() + "_V >= " + degree + " THEN "
-		    + (i + 1) + " END AS " + predicate.getProperty());
+		    + predicate.getProperty() + "_V >= " + degree 
+		    + " THEN 1 ELSE 0 END AS " + predicate.getProperty());
 	    whereClause.append("(" + predicate + " AND "
 		    + predicate.getProperty() + "_V >= " + degree + ")");
 	}
@@ -985,7 +967,7 @@ public class Query {
 	    for (int i = 1; i <= getSize(); i++) {
 
 		if (rsett.getInt(i) != 0) {
-		    s.add(rsett.getInt(i));
+		    s.add(i);
 		}
 	    }
 	    boolean ajout = true;
