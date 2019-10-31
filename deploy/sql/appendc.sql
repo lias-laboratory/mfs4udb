@@ -1,0 +1,35 @@
+alter table lasttabc add p1_v float;
+alter table lasttabc add p2_v float;
+alter table lasttabc add p3_v float;
+alter table lasttabc add p4_v float;
+alter table lasttabc add p5_v float;
+alter table lasttabc add p6_v float;
+alter table lasttabc add p7_v float;
+alter table lasttabc add p8_v float;
+alter table lasttabc add p9_v float;
+alter table lasttabc add p10_v float;
+alter table lasttabc add p11_v float;
+alter table lasttabc add p12_v float;
+alter table lasttabc add p13_v float;
+alter table lasttabc add p14_v float;
+alter table lasttabc add p15_v float;
+alter table lasttabc add p16_v float;
+
+update lasttabc set p1_v = random(),p2_v = random(),p3_v = random(),p4_v = random(),p5_v = random(),p6_v = random(),p7_v = random(),p8_v = random(),p9_v = random(),p10_v = random(),p11_v = random(),p12_v = random(),p13_v = random(),p14_v = random(),p15_v = random(),p16_v = random();
+
+alter table lasttabc rename d1 to p1;
+alter table lasttabc rename d2 to p2;
+alter table lasttabc rename d3 to p3;
+alter table lasttabc rename d4 to p4;
+alter table lasttabc rename d5 to p5;
+alter table lasttabc rename d6 to p6;
+alter table lasttabc rename d7 to p7;
+alter table lasttabc rename d8 to p8;
+alter table lasttabc rename d9 to p9;
+alter table lasttabc rename d10 to p10;
+alter table lasttabc rename d11 to p11;
+alter table lasttabc rename d12 to p12;
+alter table lasttabc rename d13 to p13;
+alter table lasttabc rename d14 to p14;
+alter table lasttabc rename d15 to p15;
+alter table lasttabc rename d16 to p16;

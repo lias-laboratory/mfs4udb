@@ -1,0 +1,35 @@
+alter table lasttaba add p1_v float;
+alter table lasttaba add p2_v float;
+alter table lasttaba add p3_v float;
+alter table lasttaba add p4_v float;
+alter table lasttaba add p5_v float;
+alter table lasttaba add p6_v float;
+alter table lasttaba add p7_v float;
+alter table lasttaba add p8_v float;
+alter table lasttaba add p9_v float;
+alter table lasttaba add p10_v float;
+alter table lasttaba add p11_v float;
+alter table lasttaba add p12_v float;
+alter table lasttaba add p13_v float;
+alter table lasttaba add p14_v float;
+alter table lasttaba add p15_v float;
+alter table lasttaba add p16_v float;
+
+update lasttaba set p1_v = random(),p2_v = random(),p3_v = random(),p4_v = random(),p5_v = random(),p6_v = random(),p7_v = random(),p8_v = random(),p9_v = random(),p10_v = random(),p11_v = random(),p12_v = random(),p13_v = random(),p14_v = random(),p15_v = random(),p16_v = random();
+
+alter table lasttaba rename d1 to p1;
+alter table lasttaba rename d2 to p2;
+alter table lasttaba rename d3 to p3;
+alter table lasttaba rename d4 to p4;
+alter table lasttaba rename d5 to p5;
+alter table lasttaba rename d6 to p6;
+alter table lasttaba rename d7 to p7;
+alter table lasttaba rename d8 to p8;
+alter table lasttaba rename d9 to p9;
+alter table lasttaba rename d10 to p10;
+alter table lasttaba rename d11 to p11;
+alter table lasttaba rename d12 to p12;
+alter table lasttaba rename d13 to p13;
+alter table lasttaba rename d14 to p14;
+alter table lasttaba rename d15 to p15;
+alter table lasttaba rename d16 to p16;
