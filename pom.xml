@@ -9,6 +9,11 @@
 		<!-- Java version we use -->
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.resources.version>2.6</maven.resources.version>
+		<maven.compiler.version>3.1</maven.compiler.version>
+		<roaringbitmap.version>0.4.10</roaringbitmap.version>
+		<owner.version>1.0.8</owner.version>
+		<postgresql.version>9.4-1201-jdbc4</postgresql.version>
 	</properties>
 	<developers>
 		<developer>
@@ -48,7 +53,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>2.6</version>
+				<version>${maven.resources.version}</version>
 				<configuration>
 					<encoding>UTF-8</encoding>
 				</configuration>
@@ -56,16 +61,13 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
+				<version>${maven.compiler.version}</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
-				<version>2.2.1</version>
 				<executions>
 					<execution>
 						<id>create-zip-package</id>
@@ -89,17 +91,17 @@
 		<dependency>
 			<groupId>org.roaringbitmap</groupId>
 			<artifactId>RoaringBitmap</artifactId>
-			<version>0.4.10</version>
+			<version>${roaringbitmap.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.aeonbits.owner</groupId>
 			<artifactId>owner</artifactId>
-			<version>1.0.8</version>
+			<version>${owner.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>9.4-1201-jdbc4</version>
+			<version>${postgresql.version}</version>
 		</dependency>
 	</dependencies>
 	
