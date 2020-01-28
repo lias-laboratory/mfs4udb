@@ -76,9 +76,9 @@
 							<goal>single</goal>
 						</goals>
 						<configuration>
-							<finalName>mfs4udb</finalName>
 							<descriptors>
-								<descriptor>src/main/assembly/AssemblyDIST.xml</descriptor>
+								<descriptor>src/main/assembly/mfs4udbjar.xml</descriptor>
+								<descriptor>src/main/assembly/mfs4udbdist.xml</descriptor>
 							</descriptors>
 						</configuration>
 					</execution>

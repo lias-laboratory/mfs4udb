@@ -16,7 +16,14 @@ pipeline {
         }
         stage('Deploy') {
             steps {
-                sh 'mvn -B -s ${MAVEN_SETTINGS} -DskipTests clean deploy'
+                sh 'mvn -B -s ${MAVEN_SETTINGS} -Dmaven.test.skip=true clean package'
+            } 
+            post {
+            	success {
+                	dir('target') {
+                    	sh 'cp *.zip /var/forge_repository'
+                	}
+            	}
             }
         }
         stage('SonarQube analysis') {

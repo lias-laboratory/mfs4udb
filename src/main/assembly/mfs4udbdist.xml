@@ -1,0 +1,18 @@
+<assembly>
+	<id>dist</id>
+	<formats>
+		<format>zip</format>
+	</formats>	
+	<fileSets>
+    	<fileSet>
+    	   <directory>deploy</directory>
+    	   <outputDirectory>/</outputDirectory>
+    	</fileSet>	
+	</fileSets>
+	<files>
+		<file>
+			<source>${project.build.directory}/${project.artifactId}-${project.version}-jar.jar</source>
+			<destName>mfs4udb.jar</destName>
+		</file>
+	</files>
+</assembly>
