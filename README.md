@@ -113,10 +113,10 @@ public class MFS4UDBSample
 
   * `getAllMFSWithMBS(double degree)`: our proposed algorithm MBS.
 
-  * `getAllMFSWithMDMB(double degree, int indice (default 1), String SHD_PATH)`: our proposed algorithm MDMB. @SHD_PATH@ is the filesystem path where SHD tool is installed. 
+  * `getAllMFSWithMDMB(double degree, int indice (default 1), String SHD_PATH)`: our proposed algorithm MDMB. `SHD_PATH` is the filesystem path where SHD tool is installed. 
 
-[1] Fokou, G., Jean, S., Hadjali, A., Baron, M.: Handling Failing RDF Queries: From Diagnosis to Relaxation. KAIS 2016.
-[2] McSherry, D.: Incremental Relaxation of Unsuccessful Queries. In: Advances in Case-Based Reasoning. 2004 131–148.
+1. Fokou, G., Jean, S., Hadjali, A., Baron, M.: Handling Failing RDF Queries: From Diagnosis to Relaxation. KAIS 2016.
+2. McSherry, D.: Incremental Relaxation of Unsuccessful Queries. In: Advances in Case-Based Reasoning. 2004 131–148.
 
 * You can change the query. Default value is: `P1 < 0.1 AND P2 < 0.1 AND P3 < 0.1 AND P4 < 0.1`
 
@@ -126,7 +126,7 @@ public class MFS4UDBSample
 
 ## Publications
 
-* Chourouk Belheouane, Stéphane Jean, Allel Hadjali, Hamid Azzoune: "Handling failing queries over uncertain databases. FUZZ-IEEE 2017: 1-6":http://ieeexplore.ieee.org/document/8015476/
+* Chourouk Belheouane, Stéphane Jean, Allel Hadjali, Hamid Azzoune: [Handling failing queries over uncertain databases. FUZZ-IEEE 2017: 1-6](http://ieeexplore.ieee.org/document/8015476/)
 
 ## Software licence agreement
 
