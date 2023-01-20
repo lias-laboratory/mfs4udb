@@ -73,9 +73,11 @@ $ psql -U $USER_POSTGRES postgres < mfs4udb-realdataset.sql
 * Add Maven dependency
 
 ```xml
-<groupId>fr.ensma.lias</groupId>
-<artifactId>mfs4udb</artifactId>
-<version>0.0.1-SNAPSHOT</version>
+<dependency>
+  <groupId>fr.ensma.lias</groupId>
+  <artifactId>mfs4udb</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+</dependency>
 ```
 
 ### Step 2: create class instructions
