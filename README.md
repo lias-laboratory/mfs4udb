@@ -130,7 +130,7 @@ public class MFS4UDBSample
 
 ## Software licence agreement
 
-Details the license agreement of OntoQLPlus V1: [LICENCE](LICENCE)
+Details the license agreement of MFS4UDB: [LICENCE](LICENCE)
 
 ## Historic Contributors
 
