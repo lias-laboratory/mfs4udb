@@ -134,7 +134,7 @@ public class MFS4UDBSample
 
 Details the license agreement of MFS4UDB: [LICENCE](LICENCE)
 
-## Historic Contributors
+## Historic Contributors (core developers first followed by alphabetical order)
 
 * [Chourouk BELHEOUANE(core developer)](https://www.lias-lab.fr/members/chouroukbelheouane/)
 * [Stéphane JEAN](https://www.lias-lab.fr/members/stephanejean/)
