@@ -132,7 +132,7 @@ public class MFS4UDBSample
 
 ## Software licence agreement
 
-Details the license agreement of MFS4UDB: [LICENCE](LICENCE)
+Details the license agreement of MFS4UDB: [LICENSE](LICENSE)
 
 ## Historic Contributors (core developers first followed by alphabetical order)
 
