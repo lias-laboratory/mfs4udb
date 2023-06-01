@@ -130,7 +130,7 @@ public class MFS4UDBSample
 
 * Chourouk Belheouane, Stéphane Jean, Allel Hadjali, Hamid Azzoune: [Handling failing queries over uncertain databases. FUZZ-IEEE 2017: 1-6](http://ieeexplore.ieee.org/document/8015476/)
 
-## Software licence agreement
+## Software license agreement
 
 Details the license agreement of MFS4UDB: [LICENSE](LICENSE)
 
